@@ -7,7 +7,6 @@ import torch
 from torch.utils.data import Dataset
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer, DataCollatorWithPadding, EarlyStoppingCallback
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
-from utils import clean_text
 
 
 class TextClassificationDataset(Dataset):
@@ -19,12 +18,23 @@ class TextClassificationDataset(Dataset):
         return len(self.data)
     def __getitem__(self, idx):
         item = self.data[idx]
-        text = clean_text(item.get("generation") or "")
+        text = item["text"]
+        score = item["score"]
+        
+        # 将浮点数得分转换为整数标签
+        # 0.0 -> 0, 0.5 -> 1, 1.0 -> 2
+        if score == 0.0:
+            label = 0
+        elif score == 0.5:
+            label = 1
+        else:  # score == 1.0
+            label = 2
+        
         encoding = self.tokenizer(text, truncation=True, max_length=self.max_length, padding=False, return_tensors=None)
         return {
             "input_ids": encoding["input_ids"],
             "attention_mask": encoding["attention_mask"],
-            "labels": 1 if item["label"] else 0
+            "labels": label
         }
     
 
@@ -37,7 +47,7 @@ def read_labeled_jsonl(path):
             if not line:
                 continue
             obj = json.loads(line)
-            if "label" in obj and obj["label"] is not None and (obj.get("generation") is not None):
+            if "score" in obj and obj["score"] is not None and (obj.get("text") is not None):
                 items.append(obj)
     return items
 
@@ -45,18 +55,19 @@ def compute_metrics(eval_pred):
     logits, labels = eval_pred
     preds = np.argmax(logits, axis=1)
     acc = accuracy_score(labels, preds)
-    precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average="binary")
+    # 改为 macro 平均，适用于多分类
+    precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average="macro")
     return {"accuracy": acc, "precision": precision, "recall": recall, "f1": f1}
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", default="/mnt/d/project/Professor_Chen/task1027/xq/dataset")
+    parser.add_argument("--input", default="/mnt/d/project/professor_chen/mission02-ai-content-detect/data")
     parser.add_argument("--output", default="/mnt/d/project/Professor_Chen/task1027/xq/roberta-base-ai-text-detection-v1/output_model")
     parser.add_argument("--model", default="/mnt/d/project/models/roberta-base-ai-text-detection-v1")
     parser.add_argument("--train-ratio", type=float, default=0.8)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--max-length", type=int, default=512)
-    parser.add_argument("--batch-size", type=int, default=16)
+    parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--epochs", type=int, default=100)
     parser.add_argument("--lr", type=float, default=2e-5)
     parser.add_argument("--early-stopping-patience", type=int, default=20)
@@ -68,7 +79,8 @@ def main():
     print(f"Train: {len(train_data)}, Val: {len(val_data)}")
 
     tokenizer = AutoTokenizer.from_pretrained(args.model)
-    model = AutoModelForSequenceClassification.from_pretrained(args.model, num_labels=2, problem_type="single_label_classification")
+    # 修改为三分类
+    model = AutoModelForSequenceClassification.from_pretrained(args.model, num_labels=3, problem_type="single_label_classification", ignore_mismatched_sizes=True)
 
     train_ds = TextClassificationDataset(train_data, tokenizer, args.max_length)
     val_ds = TextClassificationDataset(val_data, tokenizer, args.max_length)
@@ -84,9 +96,9 @@ def main():
         logging_dir=os.path.join(args.output, "logs"),
         logging_steps=50,
         eval_strategy="steps",
-        eval_steps=200,
+        eval_steps=2000,
         save_strategy="steps",
-        save_steps=200,
+        save_steps=2000,
         save_total_limit=2,
         load_best_model_at_end=True,
         metric_for_best_model="f1",
