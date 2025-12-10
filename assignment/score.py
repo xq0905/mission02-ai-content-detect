@@ -139,7 +139,7 @@ if __name__ == "__main__":
             auged_texts.append(text)
             auged_labels.append(labels)
             if out_of_domain:
-                out_of_domain_ids.append(line_num)
+                out_of_domain_ids.append(line_num-args.start_pos)
             if len(auged_texts) > 9:
                 break
 
