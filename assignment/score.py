@@ -119,7 +119,7 @@ def get_prediction(texts, auged_labels):
     return np.concatenate(preds)
 
 if __name__ == "__main__":
-    input_file = args.input_file
+    input_file = args.input_filepath
 
     # auged_texts = []
     # auged_labels = []
