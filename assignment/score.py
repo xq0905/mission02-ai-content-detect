@@ -127,7 +127,10 @@ if __name__ == "__main__":
     auged_labels = []
     out_of_domain_ids = []
     with open(input_file, 'r', encoding='utf-8') as f:
-        for line_num, line in enumerate(f[args.start_pos:]):
+        for line_num, line in enumerate(f):
+            if line_num < args.start_pos:
+                continue
+
             data = json.loads(line.strip())
             text = data['text']
             labels = data['labels']
