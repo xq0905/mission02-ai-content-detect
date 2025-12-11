@@ -1,4 +1,6 @@
-output_model
+model/
+nohup.out
+output_model/
 *.jsonl
 # Byte-compiled / optimized / DLL files
 __pycache__/

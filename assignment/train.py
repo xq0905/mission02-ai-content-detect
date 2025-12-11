@@ -21,8 +21,6 @@ class TextClassificationDataset(Dataset):
         text = item["text"]
         score = item["score"]
         
-        # 将浮点数得分转换为整数标签
-        # 0.0 -> 0, 0.5 -> 1, 1.0 -> 2
         if score == 0.0:
             label = 0
         elif score == 0.5:
@@ -55,17 +53,16 @@ def compute_metrics(eval_pred):
     logits, labels = eval_pred
     preds = np.argmax(logits, axis=1)
     acc = accuracy_score(labels, preds)
-    # 改为 macro 平均，适用于多分类
     precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average="macro")
     return {"accuracy": acc, "precision": precision, "recall": recall, "f1": f1}
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", default="/mnt/d/project/professor_chen/mission02-ai-content-detect/data")
-    parser.add_argument("--output", default="/mnt/d/project/Professor_Chen/task1027/xq/roberta-base-ai-text-detection-v1/output_model")
+    parser.add_argument("--input_dir", required=True)
+    parser.add_argument("--output_model_dir", required=True)
     parser.add_argument("--model", default="/mnt/d/project/models/roberta-base-ai-text-detection-v1")
-    parser.add_argument("--train-ratio", type=float, default=0.8)
-    parser.add_argument("--seed", type=int, default=42)
+    # parser.add_argument("--train-ratio", type=float, default=0.8)
+    # parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--max-length", type=int, default=512)
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--epochs", type=int, default=100)
@@ -74,12 +71,11 @@ def main():
     parser.add_argument("--early-stopping-threshold", type=float, default=0.0)
     args = parser.parse_args()
 
-    train_data = read_labeled_jsonl(os.path.join(args.input, "train.jsonl"))
-    val_data = read_labeled_jsonl(os.path.join(args.input, "val.jsonl"))
+    train_data = read_labeled_jsonl(os.path.join(args.input_dir, "train.jsonl"))
+    val_data = read_labeled_jsonl(os.path.join(args.input_dir, "val.jsonl"))
     print(f"Train: {len(train_data)}, Val: {len(val_data)}")
 
     tokenizer = AutoTokenizer.from_pretrained(args.model)
-    # 修改为三分类
     model = AutoModelForSequenceClassification.from_pretrained(args.model, num_labels=3, problem_type="single_label_classification", ignore_mismatched_sizes=True)
 
     train_ds = TextClassificationDataset(train_data, tokenizer, args.max_length)
@@ -87,13 +83,13 @@ def main():
     collator = DataCollatorWithPadding(tokenizer=tokenizer)
 
     training_args = TrainingArguments(
-        output_dir=args.output,
+        output_dir=args.output_model_dir,
         num_train_epochs=args.epochs,
         per_device_train_batch_size=args.batch_size,
         per_device_eval_batch_size=args.batch_size,
         learning_rate=args.lr,
         weight_decay=0.01,
-        logging_dir=os.path.join(args.output, "logs"),
+        logging_dir=os.path.join(args.output_model_dir, "logs"),
         logging_steps=50,
         eval_strategy="steps",
         eval_steps=2000,
@@ -124,8 +120,8 @@ def main():
 
     trainer.train()
     print("Final eval:", trainer.evaluate())
-    trainer.save_model(args.output)
-    tokenizer.save_pretrained(args.output)
+    trainer.save_model(args.output_model_dir)
+    tokenizer.save_pretrained(args.output_model_dir)
 
 if __name__ == "__main__":
     main()

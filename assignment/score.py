@@ -25,7 +25,7 @@ def data_preprocess(text):
     words = text.split()
     total_length = len(words)
     
-    step_size = max(1, int(total_length * 0.1))  # 至少增加1
+    step_size = max(1, int(total_length * 0.1))
     
     current_end = step_size
     all_text = []
@@ -38,9 +38,7 @@ def data_preprocess(text):
         
         current_end += step_size
     
-    # 确保最后一个窗口包含所有数据（如果还没包含的话）
     if current_end - step_size < total_length:
-        # total_length=min(total_length,500)
         window_words = words[0:total_length]
         window_text = " ".join(window_words)
         all_text.append(window_text)
@@ -92,6 +90,7 @@ def postprocess_formal(result, text_ori, auged_label):
                     current_label_2 = result_2[j]["label"]
                     if current_label_2 == "LABEL_0" or current_label_2 == "LABEL_2":
                         text_label = [label_trans[current_label_2]] * len(text_2.split())
+                        current_label = current_label_2
                         break
             
             if not text_label:
@@ -101,11 +100,45 @@ def postprocess_formal(result, text_ori, auged_label):
             text_label.extend([label_trans[next_label_dic[current_label]]] * extra_length)
 
             return text_label
+    
+    if not text_label:
+        text_1 = all_text[-1]
+        current_pos = 0
+        next_pos = len(text_1.split())
+        all_text_2 = data_preprocess_2(text_ori, current_pos, next_pos)
+        result_2 = classifier(all_text_2)
+        all_text_2.reverse()
+        result_2.reverse()
+        print(f"result_2: {result_2}")
+        current_label_2 = result_2[0]["label"]
+        if current_label_2 == "LABEL_0" or current_label_2 == "LABEL_2":
+            text_label = [label_trans[current_label_2]] * len(all_text_2[0].split())
+        else:
+            for j, text_2 in enumerate(all_text_2):
+                current_label_2 = result_2[j]["label"]
+                if current_label_2 == "LABEL_0" or current_label_2 == "LABEL_2":
+                    text_label = [label_trans[current_label_2]] * len(text_2.split())
+                    current_label = current_label_2
+                    break
+        
+        if not text_label:
+            text_label = [label_trans[current_label]] * len(text.split())
+
+        extra_length = len(auged_label) - len(text_label)
+        text_label.extend([label_trans[next_label_dic[current_label]]] * extra_length)
+
+        if text_label:
+            return text_label
+        else:
+            rand_num = random.randint(0, 1)
+            text_label = [rand_num] * len(auged_label)
+            return text_label
 
 def get_prediction(texts, auged_labels):
     preds = []
     for i, text in enumerate(texts):
         print(f"text {i}: {text}")
+        print(f"auged_labels {i}: {auged_labels[i]}")
         result = classifier(data_preprocess(text))
         print(f"result {i}: {result}")
         pred = postprocess_formal(result, text, auged_labels[i])
