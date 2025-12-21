@@ -1,3 +1,5 @@
+attacks/
+tmp_segments/
 model/
 nohup.out
 output_model/

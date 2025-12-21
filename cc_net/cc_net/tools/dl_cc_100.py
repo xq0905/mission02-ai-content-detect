@@ -19,7 +19,7 @@ from cc_net.process_wet_file import CCSegmentsReader
 
 # Set this to a directory to use as cache for intermediary files.
 # This helps for debugging.
-WET_CACHE = None
+WET_CACHE = Path("/mnt/d/project/professor_chen/mission02/cc_cache")
 # WET_CACHE = Path("wet_cache")
 
 S3_BUCKET = "https://dl.fbaipublicfiles.com/cc100"

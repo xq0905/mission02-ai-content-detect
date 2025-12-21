@@ -2,11 +2,17 @@ import numpy as np
 from detection.samples import gen_samples
 from detection.reward import calc_reward
 from transformers import pipeline
+import argparse
+
+parser = argparse.ArgumentParser(description="AI Content Detect Demo")
+parser.add_argument("--model_path", type=str, default="", help="Path to the model")
+args = parser.parse_args()
+
 
 
 classifier = pipeline(
     "text-classification",
-    model="/mnt/d/project/professor_chen/mission02-ai-content-detect/assignment/output_model",
+    model=args.model_path,
     truncation=True,
     max_length=512
 )
