@@ -17,7 +17,7 @@ def save_records(path, texts, labels, out_ids):
 
 def main():
     print("Start generating samples")
-    output = Path("data/generated_dataset_llama3_70b.jsonl")
+    output = Path("data/generated_dataset_all.jsonl")
     while True:
         try:
             texts, labels, out_ids = gen_samples()
