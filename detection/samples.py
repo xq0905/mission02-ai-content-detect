@@ -16,6 +16,7 @@ models = [
     # OllamaModel(model_name='llama3.2', base_url=ollama_url, in_the_middle_generation=True),
     OllamaModel(model_name='llama3.3:70b', base_url=ollama_url),
 
+
     # OllamaModel(model_name='qwen:32b-text-v1.5-q4_0', base_url=ollama_url),
     OllamaModel(model_name='qwen2:72b-text-q4_0', base_url=ollama_url),
     # OllamaModel(model_name='qwen2.5:14b', base_url=ollama_url, in_the_middle_generation=True),
@@ -27,6 +28,7 @@ models = [
     OllamaModel(model_name='command-r-plus:104b', base_url=ollama_url, in_the_middle_generation=True),
     OllamaModel(model_name='command-r-plus:104b', base_url=ollama_url, in_the_middle_generation=True),
     OllamaModel(model_name='command-r-plus:104b', base_url=ollama_url, in_the_middle_generation=True),
+
 
     # OllamaModel(model_name='gemma2:9b-instruct-q4_0', base_url=ollama_url, in_the_middle_generation=True),
     # OllamaModel(model_name='gemma2:27b-text-q4_0', base_url=ollama_url),
