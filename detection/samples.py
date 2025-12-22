@@ -55,7 +55,7 @@ segmentation_processer = SegmentationProcesser()
 
 
 def gen_samples():
-    data = generator.generate_data(n_human_samples=30, n_ai_samples=90)
+    data = generator.generate_data(n_human_samples=3, n_ai_samples=9)
     queries = [el for el in data]
     labels = [el.segmentation_labels for el in data]
 
