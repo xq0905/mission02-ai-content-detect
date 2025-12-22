@@ -18,7 +18,11 @@ class DataAugmentator:
                         {'attacker': SpellingAttack(), 'p': 0.4},
                         {'attacker': DeleteAttack(), 'p': 0.1},
                         ]
-
+        # self.attacks = [{'attacker': SynonymAttack(device=device), 'p': 0.0, 'pass_labels': True},
+        #                 {'attacker': ZeroWidthSpaceAttack(), 'p': 0.0},
+        #                 {'attacker': SpellingAttack(), 'p': 0.0},
+        #                 {'attacker': DeleteAttack(), 'p': 0.0},
+        #                 ]
         # {'attacker': ParaphraseAttack(), 'p': 0.2, 'apply_label': 1}, - needs too much GPU
 
     def __call__(self, text, labels):
