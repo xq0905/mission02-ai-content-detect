@@ -164,7 +164,7 @@ class DataGenerator:
         additional_gen = np.random.choice(np.arange(self.n_models_with_in_the_middle), n_samples - generations_per_model * self.n_models_with_in_the_middle, replace=False)
         for i in tqdm(range(self.n_models_with_in_the_middle), desc=f"Generating AI data"):
             cnt_samples = generations_per_model + int(i in additional_gen)
-            # self.models[self.models_with_in_the_middle[i]].init_model()
+            self.models[self.models_with_in_the_middle[i]].init_model()
             model = self.models[self.models_with_in_the_middle[i]]
             model_name = self.model_names[self.models_with_in_the_middle[i]]
 
@@ -228,7 +228,7 @@ class DataGenerator:
         additional_gen = np.random.choice(np.arange(self.n_models), n_samples - generations_per_model * self.n_models, replace=False)
         for i in tqdm(range(self.n_models), desc=f"Generating AI data"):
             cnt_samples = generations_per_model + int(i in additional_gen)
-            # self.models[i].init_model()
+            self.models[i].init_model()
             model = self.models[i]
             model_name = self.model_names[i]
 
