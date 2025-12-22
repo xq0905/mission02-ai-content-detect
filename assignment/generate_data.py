@@ -292,7 +292,7 @@ def worker_ai():
                 assert len(text_auged.split()) == len(labels_auged)
             except:
                 logger.error("Got error during augmentations for text: {} \n and labels: {}".format(text, labels))
-                logging.info(traceback.format_exc())
+                logger.info(traceback.format_exc())
                 continue
 
             if min_text_length <= len(text_auged):
@@ -357,7 +357,7 @@ def worker_middle():
                     assert len(text_auged.split()) == len(labels_auged)
                 except:
                     logger.error("Got error during augmentations for text: {} \n and labels: {}".format(text, labels))
-                    logging.info(traceback.format_exc())
+                    logger.info(traceback.format_exc())
                     continue
 
                 if min_text_length <= len(text_auged):
@@ -372,7 +372,7 @@ def worker_middle():
 
             except Exception as e:
                 logger.error(f"Error during generation with {model_name} model: {e}")
-                logging.info(traceback.format_exc())
+                logger.info(traceback.format_exc())
                 continue
 
 
