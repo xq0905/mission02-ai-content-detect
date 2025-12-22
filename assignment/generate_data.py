@@ -10,7 +10,7 @@ from loguru import logger
 import sys
 import time
 import os
-
+import nltk
 import argparse
 
 parser = argparse.ArgumentParser(description="Generate samples for AI content detection")
