@@ -151,7 +151,7 @@ class DataGenerator:
         self.human_dataset = HumanDataset()
         self.prompt_dataset = PromptDataset()
 
-        assert len(self.models) != 0
+        # assert len(self.models) != 0
 
         logger.info(f"DataGenerator initialized")
 

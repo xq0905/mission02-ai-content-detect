@@ -16,7 +16,6 @@ PILE_COUNT = 80
 CC_COUNT = 40
 PILE_PROB = PILE_COUNT / (PILE_COUNT + CC_COUNT)
 
-
 class TextDataset(Iterator):
     def __init__(self, max_prompt_len, text_field):
         super().__init__()
