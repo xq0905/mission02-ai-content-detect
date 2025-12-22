@@ -57,21 +57,18 @@ segmentation_processer = SegmentationProcesser()
 def gen_samples():
     data = generator.generate_data(n_human_samples=3, n_ai_samples=9)
     queries = [el for el in data]
-    labels = [el.segmentation_labels for el in data]
-
     out_of_domain_ids = np.where([el.data_source == 'common_crawl' for el in queries])[0]
-
     auged_texts = []
     auged_labels = []
+    metas = []
     for el in queries:
-        text, labels = segmentation_processer.subsample_words(el.text, el.segmentation_labels)
-        new_text, augs, new_labels = augmentator(text, labels)
-
+        text, lbls = segmentation_processer.subsample_words(el.text, el.segmentation_labels)
+        new_text, augs, new_labels = augmentator(text, lbls)
         if len(new_text) >= 250:
             auged_texts.append(new_text)
             auged_labels.append(new_labels)
         else:
             auged_texts.append(el.text_auged)
             auged_labels.append(el.auged_segmentation_labels)
-
-    return auged_texts, auged_labels, out_of_domain_ids
+        metas.append({'data_source': el.data_source, 'model_name': el.model_name, 'model_params': el.model_params})
+    return auged_texts, auged_labels, out_of_domain_ids, metas
