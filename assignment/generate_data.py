@@ -305,7 +305,7 @@ def worker_ai():
                 texts_l = []
                 labels_l = []
 
-def generated_ai_in_the_middle():
+def worker_middle():
         logger.info(f"Start Generating Samples Of Middle Data")
         record_filepath = "data/generated_dataset_middle.jsonl"
 
@@ -382,7 +382,7 @@ def main():
     elif args.type == "ai":
         worker_ai()
     elif args.type == "middle":
-        worker_middle("data/generated_dataset_middle.jsonl", "http://localhost:11434", "cuda", 10)
+        worker_middle()
     else:
         logger.error("Invalid type. Please choose from human, ai, or middle.")
         return
