@@ -108,6 +108,27 @@ generation_prompts = [
     "You should only provide exact answers. Do not add any reasoning, disclaimers, or filler text. You will see the first and last paragraphs of a text plus a synopsis of the middle. Provide only the middle text, ensuring it fits seamlessly. Retain any disclaimers by rephrasing them, and avoid providing any additional summarization. Do not generate anything else (Only middle part - you're output will be concatenated with begin and end)."
 ]
 
+sent_tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+def get_sentences(text):
+    spans = list(sent_tokenizer.span_tokenize(text))
+
+    sentences_with_trailing = []
+    for i, (start, end) in enumerate(spans):
+        if i < len(spans) - 1:
+            next_start = spans[i + 1][0]
+        else:
+            next_start = len(text)
+        expanded_end = end
+        while expanded_end < next_start and expanded_end < len(text):
+            if text[expanded_end].isspace():
+                expanded_end += 1
+            else:
+                break
+        sentence_text = text[start:expanded_end]
+        sentences_with_trailing.append(sentence_text)
+
+    return sentences_with_trailing
+    
 def regenerated_in_the_middle(model: OllamaModel, text, summary_prompt, generation_prompt):
     sentences = get_sentences(text)
     lens = [len(x) for x in sentences]
