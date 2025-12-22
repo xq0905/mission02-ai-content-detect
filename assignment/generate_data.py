@@ -12,6 +12,7 @@ import time
 import os
 import nltk
 import argparse
+import numpy as np
 
 parser = argparse.ArgumentParser(description="Generate samples for AI content detection")
 parser.add_argument("--type", type=str, required=True, help="human/ai/middle")
@@ -64,7 +65,7 @@ models = [
 ]
 model_names = [model.model_name for model in models]
 models_with_in_the_middle = [i for i in range(len(models)) if models[i].in_the_middle_generation]
-models_names_with_in_the_middle = [model_names[i] for i in models_with_in_the_middle]
+# models_names_with_in_the_middle = [model_names[i] for i in models_with_in_the_middle]
 
 generator = DataGenerator(models, device="cuda")
 augmentator = DataAugmentator(device="cuda")
@@ -315,16 +316,16 @@ def worker_middle():
         labels_l = []
         min_text_length = 250
 
-        model = models_with_in_the_middle[i]
-        model_name = models_names_with_in_the_middle[i]
+        model = models[models_with_in_the_middle[i]]
+        model_name = model_names[models_with_in_the_middle[i]]
         logger.info(f"Start Generating Samples Of Middle Data With Model {model_name}")
         while True:
             model_cnt += 1
             if model_cnt > 1000:
                 model_cnt = 0
                 i = (i + 1) % len(models_with_in_the_middle)
-                model = models_with_in_the_middle[i]
-                model_name = models_names_with_in_the_middle[i]
+                model = models[models_with_in_the_middle[i]]
+                model_name = model_names[models_with_in_the_middle[i]]
                 logger.info(f"Start Generating Samples Of Middle Data With Model {model_name}")
 
             init_cnt += 1
