@@ -299,8 +299,8 @@ def worker_ai():
                 texts_l.append(text_auged)
                 labels_l.append(labels_auged)
 
-            if len(texts_l) >= 100:
-                logger.info(f"Generated 100 samples of AI data with model {model_name}")
+            if len(texts_l) >= 10:
+                logger.info(f"Generated 10 samples of AI data with model {model_name}")
                 save_records(record_filepath, texts_l, labels_l)
                 texts_l = []
                 labels_l = []
@@ -364,8 +364,8 @@ def generated_ai_in_the_middle():
                     texts_l.append(text_auged)
                     labels_l.append(labels_auged)
                 
-                if len(texts_l) >= 100:
-                    logger.info(f"Generated 100 samples of AI data with model {model_name}")
+                if len(texts_l) >= 10:
+                    logger.info(f"Generated 10 samples of AI data with model {model_name}")
                     save_records(record_filepath, texts_l, labels_l)
                     texts_l = []
                     labels_l = []
