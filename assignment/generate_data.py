@@ -23,45 +23,45 @@ ollama_url = "http://127.0.0.1:11434"
 
 models = [
     OllamaModel(model_name='llama2:13b', base_url=ollama_url, in_the_middle_generation=True),               #1
-    # OllamaModel(model_name='llama3:text', base_url=ollama_url),                                           #0
-    # OllamaModel(model_name='llama3:70b', base_url=ollama_url, in_the_middle_generation=True),             #3
-    # OllamaModel(model_name='llama3.1:70b-text-q4_0', base_url=ollama_url, in_the_middle_generation=True), #3
+    OllamaModel(model_name='llama3:text', base_url=ollama_url),                                           #0
+    OllamaModel(model_name='llama3:70b', base_url=ollama_url, in_the_middle_generation=True),             #3
+    OllamaModel(model_name='llama3.1:70b-text-q4_0', base_url=ollama_url, in_the_middle_generation=True), #3
     OllamaModel(model_name='llama3.2', base_url=ollama_url, in_the_middle_generation=True),                 #1
-    # OllamaModel(model_name='llama3.3:70b', base_url=ollama_url),                                          #3                       
+    OllamaModel(model_name='llama3.3:70b', base_url=ollama_url),                                          #3                       
 
 
-    # OllamaModel(model_name='qwen:32b-text-v1.5-q4_0', base_url=ollama_url),                               #2
-    # OllamaModel(model_name='qwen2:72b-text-q4_0', base_url=ollama_url),                                   #3
-    # OllamaModel(model_name='qwen2.5:14b', base_url=ollama_url, in_the_middle_generation=True),            #0
-    # OllamaModel(model_name='qwen2.5-coder:32b', base_url=ollama_url, in_the_middle_generation=True),      #2
-    # OllamaModel(model_name='qwen2.5:72b', base_url=ollama_url, in_the_middle_generation=True),            #3
+    OllamaModel(model_name='qwen:32b-text-v1.5-q4_0', base_url=ollama_url),                               #2
+    OllamaModel(model_name='qwen2:72b-text-q4_0', base_url=ollama_url),                                   #3
+    OllamaModel(model_name='qwen2.5:14b', base_url=ollama_url, in_the_middle_generation=True),            #0
+    OllamaModel(model_name='qwen2.5-coder:32b', base_url=ollama_url, in_the_middle_generation=True),      #2
+    OllamaModel(model_name='qwen2.5:72b', base_url=ollama_url, in_the_middle_generation=True),            #3
 
-    # OllamaModel(model_name='command-r', base_url=ollama_url, in_the_middle_generation=True),              #0
-    # OllamaModel(model_name='command-r', base_url=ollama_url, in_the_middle_generation=True),              #0
-    # OllamaModel(model_name='command-r-plus:104b', base_url=ollama_url, in_the_middle_generation=True),    #3
-    # OllamaModel(model_name='command-r-plus:104b', base_url=ollama_url, in_the_middle_generation=True),    #3
-    # OllamaModel(model_name='command-r-plus:104b', base_url=ollama_url, in_the_middle_generation=True),    #3
+    OllamaModel(model_name='command-r', base_url=ollama_url, in_the_middle_generation=True),              #0
+    OllamaModel(model_name='command-r', base_url=ollama_url, in_the_middle_generation=True),              #0
+    OllamaModel(model_name='command-r-plus:104b', base_url=ollama_url, in_the_middle_generation=True),    #3
+    OllamaModel(model_name='command-r-plus:104b', base_url=ollama_url, in_the_middle_generation=True),    #3
+    OllamaModel(model_name='command-r-plus:104b', base_url=ollama_url, in_the_middle_generation=True),    #3
 
 
-    # OllamaModel(model_name='gemma2:9b-instruct-q4_0', base_url=ollama_url, in_the_middle_generation=True),#0
-    # OllamaModel(model_name='gemma2:27b-text-q4_0', base_url=ollama_url),                                  #2
-    # OllamaModel(model_name='gemma2:27b', base_url=ollama_url, in_the_middle_generation=True),             #2
+    OllamaModel(model_name='gemma2:9b-instruct-q4_0', base_url=ollama_url, in_the_middle_generation=True),#0
+    OllamaModel(model_name='gemma2:27b-text-q4_0', base_url=ollama_url),                                  #2
+    OllamaModel(model_name='gemma2:27b', base_url=ollama_url, in_the_middle_generation=True),             #2
 
     OllamaModel(model_name='mistral:text', base_url=ollama_url),                                          #1
     OllamaModel(model_name='mistral-nemo:12b', base_url=ollama_url, in_the_middle_generation=True),       #1
-    # OllamaModel(model_name='mistral-small:22b', base_url=ollama_url, in_the_middle_generation=True),      #2
-    # OllamaModel(model_name='mistral-large:123b', base_url=ollama_url, in_the_middle_generation=True),     #3
+    OllamaModel(model_name='mistral-small:22b', base_url=ollama_url, in_the_middle_generation=True),      #2
+    OllamaModel(model_name='mistral-large:123b', base_url=ollama_url, in_the_middle_generation=True),     #3
 
     OllamaModel(model_name='internlm2:7b', base_url=ollama_url),                                          #1
-    # OllamaModel(model_name='internlm2:20b', base_url=ollama_url),                                         #2
-    # OllamaModel(model_name='internlm/internlm2.5:20b-chat', base_url=ollama_url),                         #2
+    OllamaModel(model_name='internlm2:20b', base_url=ollama_url),                                         #2
+    OllamaModel(model_name='internlm/internlm2.5:20b-chat', base_url=ollama_url),                         #2
 
-    # OllamaModel(model_name='deepseek-v2:16b', base_url=ollama_url),                                        #2
-    # OllamaModel(model_name='deepseek-r1:14b', base_url=ollama_url),                                        #2
-    # OllamaModel(model_name='phi4:14b', base_url=ollama_url),                                               #2
-    # OllamaModel(model_name='aya-expanse:32b', base_url=ollama_url),                                        #2
-    # OllamaModel(model_name='yi:34b-chat', base_url=ollama_url),                                            #2
-    # OllamaModel(model_name='athene-v2:72b', base_url=ollama_url),                                          #3
+    OllamaModel(model_name='deepseek-v2:16b', base_url=ollama_url),                                        #2
+    OllamaModel(model_name='deepseek-r1:14b', base_url=ollama_url),                                        #2
+    OllamaModel(model_name='phi4:14b', base_url=ollama_url),                                               #2
+    OllamaModel(model_name='aya-expanse:32b', base_url=ollama_url),                                        #2
+    OllamaModel(model_name='yi:34b-chat', base_url=ollama_url),                                            #2
+    OllamaModel(model_name='athene-v2:72b', base_url=ollama_url),                                          #3
 ]
 model_names = [model.model_name for model in models]
 models_with_in_the_middle = [i for i in range(len(models)) if models[i].in_the_middle_generation]
@@ -217,7 +217,7 @@ def setup_logger():
         retention="3 months"
     )
 
-def save_records(path, texts, labels, out_ids=None, metas=None): 
+def save_records(path, texts, labels, model_name="human", out_ids=None, metas=None): 
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
     # out_set = set(out_ids.tolist()) if hasattr(out_ids, "tolist") else set(out_ids)
@@ -226,7 +226,7 @@ def save_records(path, texts, labels, out_ids=None, metas=None):
         with p.open("a", encoding="utf-8") as f:
             for i, (t, lbls) in enumerate(zip(texts, labels)):
                 print(f"lbls: {lbls}")
-                rec = {"text": t, "labels": [int(x) for x in lbls]}
+                rec = {"text": t, "labels": [int(x) for x in lbls], "model_name": model_name}
                 json.dump(rec, f, ensure_ascii=False)
                 f.write("\n")
 
@@ -322,7 +322,7 @@ def worker_ai():
 
             if len(texts_l) >= 10:
                 logger.info(f"Generated 10 samples of AI data with model {model_name}")
-                save_records(record_filepath, texts_l, labels_l)
+                save_records(record_filepath, texts_l, labels_l, model_name)
                 texts_l = []
                 labels_l = []
 
@@ -386,7 +386,7 @@ def worker_middle():
                 
                 if len(texts_l) >= 10:
                     logger.info(f"Generated 10 samples of AI data with model {model_name}")
-                    save_records(record_filepath, texts_l, labels_l)
+                    save_records(record_filepath, texts_l, labels_l, model_name)
                     texts_l = []
                     labels_l = []
 
