@@ -60,15 +60,16 @@ class WeightedLossTrainer(Trainer):
     def __init__(self, class_weights=None, **kwargs):
         super().__init__(**kwargs)
         self.class_weights = class_weights
-    def compute_loss(self, model, inputs, return_outputs=False):
-        labels = inputs.pop("labels")
-        outputs = model(**inputs)
+    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
+        labels = inputs.get("labels")
+        if labels is None:
+            return super().compute_loss(model, inputs, return_outputs=return_outputs, **kwargs)
+        if self.class_weights is None:
+            return super().compute_loss(model, inputs, return_outputs=return_outputs, **kwargs)
+        outputs = model(**{k: v for k, v in inputs.items() if k != "labels"})
         logits = outputs.logits
-        if self.class_weights is not None:
-            weight = torch.tensor(self.class_weights, dtype=torch.float, device=logits.device)
-            loss_fct = torch.nn.CrossEntropyLoss(weight=weight)
-        else:
-            loss_fct = torch.nn.CrossEntropyLoss()
+        weight = torch.tensor(self.class_weights, dtype=torch.float, device=logits.device)
+        loss_fct = torch.nn.CrossEntropyLoss(weight=weight)
         loss = loss_fct(logits.view(-1, model.config.num_labels), labels.view(-1))
         return (loss, outputs) if return_outputs else loss
 
@@ -121,7 +122,7 @@ def main():
         weight_decay=args.weight_decay,
         logging_dir=os.path.join(args.output_model_dir, "logs"),
         logging_steps=50,
-        evaluation_strategy=args.eval_strategy,
+        eval_strategy=args.eval_strategy,
         save_strategy=args.save_strategy,
         save_total_limit=2,
         load_best_model_at_end=True,
