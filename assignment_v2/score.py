@@ -3,7 +3,7 @@ import numpy as np
 import json
 
 from reward import calc_reward
-from transformers import pipeline
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 from detection.samples import gen_samples
 
 
@@ -15,9 +15,15 @@ parser.add_argument("--start_pos", type=int, default=0)
 args = parser.parse_args()
 
 
+try:
+    _tokenizer = AutoTokenizer.from_pretrained(args.model_path, use_fast=True)
+except Exception:
+    _tokenizer = AutoTokenizer.from_pretrained(args.model_path, use_fast=False)
+_model = AutoModelForSequenceClassification.from_pretrained(args.model_path)
 classifier = pipeline(
     "text-classification",
-    model=args.model_path,
+    model=_model,
+    tokenizer=_tokenizer,
     truncation=True,
     max_length=512
 )
@@ -157,7 +163,7 @@ def get_prediction(texts, auged_labels):
 if __name__ == "__main__":
     input_file = args.input_filepath
 
-    if not input_file:
+    if input_file:
         auged_texts = []
         auged_labels = []
         out_of_domain_ids = []
@@ -169,7 +175,7 @@ if __name__ == "__main__":
                 data = json.loads(line.strip())
                 text = data['text']
                 labels = data['labels']
-                out_of_domain = data['out_of_domain']
+                out_of_domain = data.get('out_of_domain', False)
 
                 auged_texts.append(text)
                 auged_labels.append(labels)
